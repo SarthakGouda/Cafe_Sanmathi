@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanmathi cafe</title>
+    <link rel="stylesheet" href="css/combined.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Noto+Serif&display=swap" rel="stylesheet">
+
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous"> -->
+    
+    <!-- AOS CSS  for the animation of that sanmathi cafe para -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <script>
+        // Check if user is logged in
+        window.onload = function() {
+            if (!localStorage.getItem('isLoggedIn')) {
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1 style="font-family: 'Playfair Display', 'Noto Serif', serif;">Sanmathi cafe</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                    <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
+                  </svg> Home </a></li>
+                <li><a href="#menu-categories"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-menu-down" viewBox="0 0 16 16">
+                    <path d="M7.646.146a.5.5 0 0 1 .708 0L10.207 2H14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h3.793zM1 7v3h14V7zm14-1V4a1 1 0 0 0-1-1h-3.793a1 1 0 0 1-.707-.293L8 1.207l-1.5 1.5A1 1 0 0 1 5.793 3H2a1 1 0 0 0-1 1v2zm0 5H1v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM2 4.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5m0 4a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5m0 4a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5"/>
+                  </svg> Menu</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="#contact"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+                    <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4a.5.5 0 0 0-.5-.5m2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2a.5.5 0 0 0-.5-.5m0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2a.5.5 0 0 0-.5-.5"/>
+                  </svg> Contact</a></li>
+                <li><a href="#" id="logoutBtn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
+                    <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                  </svg> Logout</a></li>
+            </ul>
+            <div class="cart-icon">
+                <a href="cart.html">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+            </div>
+            <div class="hamburger">
+                
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <section id="hero">
+        <div class="hero-content">
+            <p data-aos="slide-down" data-aos-duration="3000">cafe sanmathi | ಕೆಫೆ ಸನ್ಮತಿ</p>
+            <a  data-aos="slide-down" data-aos-duration="3000" href="#menu-categories" class="btn btn-primary">Order Now</a>
+        </div>
+    </section>
+    
+
+
+<!--  -->
+    <section id="menu-categories">
+        <div class="container">
+            <h2 class="section-title">MENU FOR THE DAY</h2>
+            <div class="categories">
+                <div class="category-card">
+                    <img src="images/breakfast.jpg" alt="Breakfast" style="max-width: 100%; height: 50%;">
+                    <h3>Breakfast</h3>
+                    <a href="menu.html?category=breakfast" class="btn btn-outline">View Items</a>
+                </div>
+                <div class="category-card">
+                    <img src="images/lunch.jpg" alt="Lunch" style="max-width: 100%; height: 50%;" >
+                    <h3>Lunch</h3>
+                    <a href="menu.html?category=lunch" class="btn btn-outline">View Items</a>
+                </div>
+                <div class="category-card">
+                    <img src="images/dinner.jpg" alt="Dinner" style="max-width: 100%; height: 50%;">
+                    <h3>Dinner</h3>
+                    <a href="menu.html?category=dinner" class="btn btn-outline">View Items</a>
+                </div>
+                <div class="category-card">
+                    <img src="images/snacks.jpg" alt="Snacks" style="max-width: 100%; height: 50%;">
+                    <h3>Snacks</h3>
+                    <a href="menu.html?category=snacks" class="btn btn-outline">View Items</a>
+                </div>
+                <div class="category-card">
+                    <img src="images/beverages.jpg" alt="Beverages" style="max-width: 100%; height: 50%;">
+                    <h3>Beverages</h3>
+                    <a href="menu.html?category=beverages" class="btn btn-outline">View Items</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+<!--  -->
+    <section id="featured">
+        <div class="container">
+            <h2 class="section-title">Popular Dishes</h2>
+            <div class="featured-dishes">
+                <div class="dish-card">
+                    <div class="dish-image">
+                        <img src="images/sandwich.jpg" alt="Chicken Sandwich">
+                        <span class="badge">Bestseller</span>
+                    </div>
+                    <div class="dish-info">
+                        <h3>Chicken Sandwich</h3>
+                        <p>Grilled chicken, lettuce, tomato, and mayo on toasted bread</p>
+                        <div class="dish-meta">
+                            <span class="price">₹120</span>
+                            <button class="add-to-cart" data-id="1" data-name="Chicken Sandwich" data-price="120" data-image="images/sandwich.jpg">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="dish-card">
+                    <div class="dish-image">
+                        <img src="images/pasta.jpg" alt="Creamy Pasta">
+                        <span class="badge">Vegetarian</span>
+                    </div>
+                    <div class="dish-info">
+                        <h3>Creamy Pasta</h3>
+                        <p>Pasta in creamy sauce with mushrooms and herbs</p>
+                        <div class="dish-meta">
+                            <span class="price">₹150</span>
+                            <button class="add-to-cart" data-id="2" data-name="Creamy Pasta" data-price="150" data-image="images/pasta.jpg">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="dish-card">
+                    <div class="dish-image">
+                        <img src="images/biryani.jpg" alt="Chicken Biryani">
+                        <span class="badge">Spicy</span>
+                    </div>
+                    <div class="dish-info">
+                        <h3>Chicken Biryani</h3>
+                        <p>Aromatic rice dish with chicken, spices, and herbs</p>
+                        <div class="dish-meta">
+                            <span class="price">₹180</span>
+                            <button class="add-to-cart" data-id="3" data-name="Chicken Biryani" data-price="180" data-image="images/biryani.jpg">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="dish-card">
+                    <div class="dish-image">
+                        <img src="images/noodles.jpg" alt="Vegetable Noodles">
+                        <span class="badge">Vegetarian</span>
+                    </div>
+                    <div class="dish-info">
+                        <h3>Vegetable Noodles</h3>
+                        <p>Stir-fried noodles with mixed vegetables</p>
+                        <div class="dish-meta">
+                            <span class="price">₹130</span>
+                            <button class="add-to-cart" data-id="4" data-name="Vegetable Noodles" data-price="130" data-image="images/noodles.jpg">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="view-all">
+                <a href="menu.html" class="btn btn-secondary">View Full Menu</a>
+            </div>
+        </div>
+    </section>
+
+
+<!-- this is how it works  -->
+
+    <section id="how-it-works">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <i class="bi bi-patch-question"></i>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h3>Choose Your Food</h3>
+
+                </div>
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h3>Add to Cart</h3>
+                </div>
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>Receive Your Food</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+<!-- contacts -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <div class="contact-info">
+                <div class="contact-card">
+                    <i class="fas fa-phone"></i>
+                    <h3>Phone</h3>
+                    <p>+91 9482322197</p>
+                    <p>+91 8310045963</p>
+                </div>
+                <div class="contact-card">
+                    <i class="fas fa-envelope"></i>
+                    <h3>Email</h3>
+                    <p>sarthakgouda0507@gmail.com</p>
+                    <p>neelpatelgdsc@gmail.com</p>
+                </div>
+                <div class="contact-card">
+                    <i class="fas fa-clock"></i>
+                    <h3>Time</h3>
+                    <p>9:00 AM - 9:00 PM</p>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>Cafe Sanmathi</h2>
+                    <p>Delicious food served to your plates.</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="menu.html">Menu</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Categories</h3>
+                    <ul>
+                        <li><a href="menu.html?category=breakfast">Breakfast</a></li>
+                        <li><a href="menu.html?category=lunch">Lunch</a></li>
+                        <li><a href="menu.html?category=dinner">Dinner</a></li>
+                        <li><a href="menu.html?category=snacks">Snacks</a></li>
+                        <li><a href="menu.html?category=beverages">Beverages</a></li>
+                    </ul>
+                </div>
+                
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 CafeSanmathi. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="cart-notification" class="notification">
+        <p>Item added to cart</p>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/cart.js"></script>
+    <!-- AOS JS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<!-- for the animation -->
+<script>
+  AOS.init();
+</script>
+
+
+<script>
+    // Add logout functionality
+    document.getElementById('logoutBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        localStorage.removeItem('isLoggedIn');
+        window.location.href = 'login.html';
+    });
+</script>
+
+</body>
+</html> 

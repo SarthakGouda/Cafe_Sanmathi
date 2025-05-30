@@ -1,0 +1,7 @@
+/* Combined CSS file for HostelEats */
+
+/* Import base styles */
+@import url('styles.css');
+
+/* Import additional styles */
+@import url('styles-add.css'); 

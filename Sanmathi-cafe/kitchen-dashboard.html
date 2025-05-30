@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitchen Dashboard - HostelEats</title>
+    <link rel="stylesheet" href="css/combined.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .dashboard-container {
+            padding: 20px;
+            margin-top: 100px;
+        }
+        .order-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .order-items {
+            margin-bottom: 15px;
+        }
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .order-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-new {
+            background-color: #f7b731;
+            color: #fff;
+        }
+        .status-preparing {
+            background-color: #4ecdc4;
+            color: #fff;
+        }
+        .status-ready {
+            background-color: #20bf6b;
+            color: #fff;
+        }
+        .status-completed {
+            background-color: #a5b1c2;
+            color: #fff;
+        }
+        .orders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .filters {
+            display: flex;
+            gap: 10px;
+        }
+        .filter-btn {
+            padding: 8px 15px;
+            background-color: #f1f2f6;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+        .empty-state i {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>HostelEats</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="kitchen-dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="#">Orders</a></li>
+                <li><a href="#">Menu Management</a></li>
+                <li><a href="#">Settings</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <section class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>Kitchen Dashboard</h1>
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">All Orders</button>
+                <button class="filter-btn" data-filter="new">New</button>
+                <button class="filter-btn" data-filter="preparing">Preparing</button>
+                <button class="filter-btn" data-filter="ready">Ready</button>
+                <button class="filter-btn" data-filter="completed">Completed</button>
+            </div>
+        </div>
+
+        <div class="orders-grid" id="orders-container">
+            <!-- Orders will be dynamically populated here -->
+        </div>
+    </section>
+
+    <script src="js/script.js"></script>
+    <script src="js/order-system.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize sample orders if none exist
+            initializeSampleOrders();
+            
+            // Render orders
+            function renderOrders(orders) {
+                console.log('Rendering orders: ', orders.length);
+                const ordersContainer = document.getElementById('orders-container');
+                
+                if (orders.length === 0) {
+                    ordersContainer.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-clipboard-list"></i>
+                            <h2>No orders found</h2>
+                            <p>There are no orders matching your filters.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                ordersContainer.innerHTML = '';
+                
+                // Sort orders - newest first
+                orders.sort((a, b) => {
+                    // Sort by status first (new > preparing > ready > delivered)
+                    const statusOrder = { 'new': 0, 'preparing': 1, 'ready': 2, 'delivered': 3 };
+                    if (statusOrder[a.status] !== statusOrder[b.status]) {
+                        return statusOrder[a.status] - statusOrder[b.status];
+                    }
+                    
+                    // Then by time (assuming time strings are comparable, otherwise would need to parse)
+                    return new Date(b.date + ' ' + b.time) - new Date(a.date + ' ' + a.time);
+                });
+                
+                orders.forEach(order => {
+                    let statusClass = '';
+                    let statusText = '';
+                    
+                    switch(order.status) {
+                        case 'new':
+                            statusClass = 'status-new';
+                            statusText = 'New Order';
+                            break;
+                        case 'preparing':
+                            statusClass = 'status-preparing';
+                            statusText = 'Preparing';
+                            break;
+                        case 'ready':
+                            statusClass = 'status-ready';
+                            statusText = 'Ready for Pickup';
+                            break;
+                        case 'completed':
+                        case 'delivered':
+                            statusClass = 'status-completed';
+                            statusText = 'Completed';
+                            break;
+                    }
+                    
+                    let itemsHTML = '';
+                    order.items.forEach(item => {
+                        itemsHTML += `
+                            <div class="order-item">
+                                <span>${item.name} x${item.quantity}</span>
+                                <span>₹${item.total}</span>
+                            </div>
+                        `;
+                    });
+                    
+                    const orderCardHTML = `
+                        <div class="order-card" data-status="${order.status}">
+                            <div class="order-header">
+                                <div>
+                                    <h3>${order.id}</h3>
+                                    <p>${order.customer} | ${order.phone}</p>
+                                    <p><small>${order.time}</small></p>
+                                </div>
+                                <span class="status-badge ${statusClass}">${statusText}</span>
+                            </div>
+                            <div class="order-items">
+                                ${itemsHTML}
+                            </div>
+                            <div class="order-total">
+                                <strong>Total: ₹${order.total}</strong>
+                            </div>
+                            <hr style="margin: 15px 0; border: none; border-top: 1px solid #eee;">
+                            <div class="order-actions">
+                                ${order.status === 'new' ? 
+                                    `<button class="btn btn-primary start-btn" data-id="${order.id}">Start Preparing</button>` : ''}
+                                ${order.status === 'preparing' ? 
+                                    `<button class="btn btn-primary ready-btn" data-id="${order.id}">Mark as Ready</button>` : ''}
+                                ${order.status === 'ready' ? 
+                                    `<button class="btn btn-primary complete-btn" data-id="${order.id}">Mark as Completed</button>` : ''}
+                                <button class="btn btn-secondary">View Details</button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    ordersContainer.innerHTML += orderCardHTML;
+                });
+                
+                // Add event listeners for action buttons
+                addActionListeners();
+            }
+            
+            // Initialize with all orders from the order system
+            renderOrders(getAllOrders());
+            
+            // Filter functionality
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    const filter = this.getAttribute('data-filter');
+                    
+                    // Get orders by status using the order system
+                    const filteredOrders = getOrdersByStatus(filter);
+                    renderOrders(filteredOrders);
+                });
+            });
+            
+            // Add action listeners for order status buttons
+            function addActionListeners() {
+                // Start preparing buttons
+                document.querySelectorAll('.start-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const orderId = this.getAttribute('data-id');
+                        
+                        // Update the order status in the order system
+                        updateOrderStatus(orderId, 'preparing');
+                        
+                        // Re-render the current filter
+                        const activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
+                        const filteredOrders = getOrdersByStatus(activeFilter);
+                        renderOrders(filteredOrders);
+                    });
+                });
+                
+                // Mark as ready buttons
+                document.querySelectorAll('.ready-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const orderId = this.getAttribute('data-id');
+                        
+                        // Update the order status in the order system
+                        updateOrderStatus(orderId, 'ready');
+                        
+                        // Re-render based on the active filter
+                        const activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
+                        const filteredOrders = getOrdersByStatus(activeFilter);
+                        renderOrders(filteredOrders);
+                    });
+                });
+                
+                // Mark as completed buttons
+                document.querySelectorAll('.complete-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const orderId = this.getAttribute('data-id');
+                        
+                        // Update the order status in the order system
+                        updateOrderStatus(orderId, 'completed');
+                        
+                        // Re-render based on the active filter
+                        const activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
+                        const filteredOrders = getOrdersByStatus(activeFilter);
+                        renderOrders(filteredOrders);
+                    });
+                });
+            }
+            
+            // Set up auto-refresh every 30 seconds to check for new orders
+            setInterval(function() {
+                const activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
+                const filteredOrders = getOrdersByStatus(activeFilter);
+                renderOrders(filteredOrders);
+            }, 30000);
+        });
+    </script>
+</body>
+</html> 
